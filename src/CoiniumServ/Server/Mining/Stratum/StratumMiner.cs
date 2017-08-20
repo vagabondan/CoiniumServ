@@ -241,7 +241,6 @@ namespace CoiniumServ.Server.Mining.Stratum
                 _packetLogger.Verbose("rx: {0}", line.PrettifyJson());
 
                 var async = new JsonRpcStateAsync(_rpcResultHandler, rpcContext) {JsonRpc = line};
-
                 JsonRpcProcessor.Process(Pool.Config.Coin.Name, async, rpcContext);
             }
             catch (JsonReaderException e) // if client sent an invalid message
@@ -258,12 +257,11 @@ namespace CoiniumServ.Server.Mining.Stratum
         /// </summary>
         public void SendMessage(string message)
         {
-            var notification = new StratumJsonRequest
+            var notification = new JsonRequest
             {
                 Id = null,
                 Method = "client.show_message",
-                Params = new List<object> { message },
-                Error = null
+                Params = new List<object> { message }
             };
 
             Send(notification);
@@ -280,12 +278,11 @@ namespace CoiniumServ.Server.Mining.Stratum
             PreviousDifficulty = Difficulty; // store the previous difficulty (so we can still accept shares targeted for last difficulty when vardiff sets a new difficulty).
             Difficulty = difficulty;
 
-            var notification = new StratumJsonRequest
+            var notification = new JsonRequest
             {
                 Id = null,
                 Method = "mining.set_difficulty",
-                Params = new List<object>{ Difficulty },
-                Error = null
+                Params = new List<object>{ Difficulty }
             };
 
             Send(notification); //send the difficulty update message.
@@ -297,12 +294,11 @@ namespace CoiniumServ.Server.Mining.Stratum
         /// </summary>
         public void SendJob(IJob job)
         {
-            var notification = new StratumJsonRequest
+            var notification = new JsonRequest
             {
                 Id = null,
                 Method = "mining.notify",
-                Params = job,
-                Error = null
+                Params = job
             };
 
             Send(notification);
@@ -317,15 +313,5 @@ namespace CoiniumServ.Server.Mining.Stratum
 
             _packetLogger.Verbose("tx: {0}", data.ToEncodedString().PrettifyJson());
         }
-    }
-
-    public class StratumJsonRequest:JsonRequest
-    {
-		[JsonProperty("error")]
-		public object Error
-		{
-			get;
-			set;
-		}
     }
 }

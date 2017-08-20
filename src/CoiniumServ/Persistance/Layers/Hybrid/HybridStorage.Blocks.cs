@@ -145,13 +145,14 @@ namespace CoiniumServ.Persistance.Layers.Hybrid
                     blocks.AddRange(results);
                 }
             }
-            catch (InvalidOperationException) // fires when no result is found.
+            catch (InvalidOperationException e) // fires when no result is found.
             {
-                _logger.Debug("No results found on GetBlocks");
+                _logger.Error(e,"InvalidOperationException while GetBlocks");
+                return null;
             }
             catch (Exception e)
             {
-                _logger.Error(e,"An exception occured while getting block");
+                _logger.Error("An exception occured while getting block; {0:l}", e.Message);
             }
 
             return blocks;
@@ -184,9 +185,10 @@ namespace CoiniumServ.Persistance.Layers.Hybrid
                     blocks.AddRange(results);
                 }
             }
-            catch (InvalidOperationException) // fires when no result is found.
+            catch (InvalidOperationException e) // fires when no result is found.
             {
-                _logger.Debug("No results found on GetPaidBlocks");
+                _logger.Error(e,"InvalidOperationException while GetPaidBlocks");
+                return null;
             }
             catch (Exception e)
             {
@@ -212,10 +214,6 @@ namespace CoiniumServ.Persistance.Layers.Hybrid
                     blocks.AddRange(results);
                 }
             }
-			catch (InvalidOperationException) // fires when no result is found.
-			{
-				_logger.Debug("No results found on GetUnpaidBlocks");
-			}
             catch (Exception e)
             {
                 _logger.Error("An exception occured while getting un-paid blocks: {0:l}", e.Message);
@@ -243,10 +241,6 @@ namespace CoiniumServ.Persistance.Layers.Hybrid
                     blocks.AddRange(results);
                 }
             }
-			catch (InvalidOperationException) // fires when no result is found.
-			{
-				_logger.Debug("No results found on GetPendingBlocks");
-			}
             catch (Exception e)
             {
                 _logger.Error("An exception occured while getting pending blocks: {0:l}", e.Message);
@@ -278,10 +272,6 @@ namespace CoiniumServ.Persistance.Layers.Hybrid
                     blocks["confirmed"] = (int)data.confirmed;
                 }
             }
-			catch (InvalidOperationException) // fires when no result is found.
-			{
-				_logger.Debug("No results found on GetTotalBlocks");
-			}
             catch (Exception e)
             {
                 _logger.Error("An exception occured while getting block totals: {0:l}", e.Message);
