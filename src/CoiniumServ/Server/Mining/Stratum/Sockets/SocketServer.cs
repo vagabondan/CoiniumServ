@@ -305,8 +305,10 @@ namespace CoiniumServ.Server.Mining.Stratum.Sockets
                     try
                     {
                         connection.Socket.Disconnect(true);
-                    }catch(Exception ex){
-                        _logger.Error(ex,"Exception on client disconnection");
+                    }
+                    catch(Exception ex)
+                    {
+                        _logger.Error(ex, "Exception on client disconnection");
                     }
                 }
             }
