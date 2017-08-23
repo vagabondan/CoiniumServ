@@ -197,8 +197,8 @@ namespace CoiniumServ.Shares
             */
 
             // check if block candicate
-            if (Job.Target >= HeaderValue)
-            //if (true) //for Debug only
+            //if (Job.Target >= HeaderValue)
+            if (true) //mario-x11-special_edition
             {
 				
                 IsBlockCandidate = true;
